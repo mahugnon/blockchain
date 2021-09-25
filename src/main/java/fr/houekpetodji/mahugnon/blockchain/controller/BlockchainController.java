@@ -1,6 +1,7 @@
 package fr.houekpetodji.mahugnon.blockchain.controller;
 
 import fr.houekpetodji.mahugnon.blockchain.model.SmartBlock;
+import fr.houekpetodji.mahugnon.blockchain.model.SmartBlockchain;
 import fr.houekpetodji.mahugnon.blockchain.model.Transaction;
 import fr.houekpetodji.mahugnon.blockchain.service.SmartBlockchainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ SmartBlockchainService smartBlockchainService;
     public ResponseEntity<String> newTransaction(@RequestBody Transaction transaction) {
       try {
           this.smartBlockchainService.newTransaction(transaction);
-          return new ResponseEntity<>("The new transaction  is successfully mined", HttpStatus.OK);
+          return new ResponseEntity<>("The new transaction  is successfully created", HttpStatus.OK);
       }catch (Exception e){
           return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
       }
@@ -47,7 +48,7 @@ SmartBlockchainService smartBlockchainService;
  * */
     @GetMapping(value = "/chain")
     @ResponseBody
-    public List<SmartBlock> fullChain() {
+    public SmartBlockchain fullChain() {
         return smartBlockchainService.getChain();
     }
 

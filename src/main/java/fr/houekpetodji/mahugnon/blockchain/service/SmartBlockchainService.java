@@ -2,6 +2,7 @@ package fr.houekpetodji.mahugnon.blockchain.service;
 
 import fr.houekpetodji.mahugnon.blockchain.dao.SmartBlockchainDao;
 import fr.houekpetodji.mahugnon.blockchain.model.SmartBlock;
+import fr.houekpetodji.mahugnon.blockchain.model.SmartBlockchain;
 import fr.houekpetodji.mahugnon.blockchain.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class SmartBlockchainService {
     public void mine() throws Exception {
         if (this.hasNewTransactions()) {
             SmartBlock block = new SmartBlock(currentTransations, this.lastHash());
-            smartBlockchainDao.getSmartBlockchain().newBlock(block);
+            smartBlockchainDao.newBlock(block);
             currentTransations = new ArrayList<>();
         } else {
             throw new Exception("You must add transaction before mine");
@@ -43,7 +44,11 @@ public class SmartBlockchainService {
      * Return the last hash value.
      * */
     public String lastHash() {
-        return smartBlockchainDao.getSmartBlockchain().lastBlock().getHash();
+        try {
+            return smartBlockchainDao.getSmartBlockchain().lastBlock().getHash();
+        } catch (Exception e) {
+           return e.getMessage();
+        }
     }
 /**
  * test if a transaction is added
@@ -55,7 +60,9 @@ public class SmartBlockchainService {
 /**
  * Return all the blocks of the blockchain
  * */
-    public List<SmartBlock> getChain() {
-        return  smartBlockchainDao.getSmartBlockchain().getChaine();
+    public SmartBlockchain getChain() {
+        return  smartBlockchainDao.getSmartBlockchain();
     }
+
+
 }

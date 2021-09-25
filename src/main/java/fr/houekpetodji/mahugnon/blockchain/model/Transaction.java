@@ -10,8 +10,7 @@ import java.util.UUID;
 @Entity
 public class Transaction implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(generator = "UUID")
     private UUID transactionId;
 
     private  String sender;

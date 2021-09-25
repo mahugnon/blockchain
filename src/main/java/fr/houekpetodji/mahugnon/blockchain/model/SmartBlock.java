@@ -1,3 +1,4 @@
+
 package fr.houekpetodji.mahugnon.blockchain.model;
 
 import com.google.common.hash.Hashing;
@@ -11,10 +12,11 @@ import java.util.UUID;
 @Entity
 public class SmartBlock {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-private UUID index;
+    @GeneratedValue(generator = "UUID")
+private UUID blockId;
 private Date timestamp;
-@OneToMany(cascade = CascadeType.ALL)
+@OneToMany
+@JoinColumn(name = "transactions")
 private  List<Transaction> transactions;
 private String previousHash;
 private  String hash;
@@ -30,8 +32,8 @@ private  String hash;
 
     }
 
-    public UUID getIndex() {
-        return index;
+    public UUID getBlockId() {
+        return blockId;
     }
 
     public Date getTimestamp() {
@@ -58,7 +60,7 @@ private  String hash;
         transactionsString = "[\n";
         for (Transaction tr : transactions) transactionsString = transactionsString + tr.toString() + "\n";
         transactionsString = transactionsString+"]";
-        return new StringBuilder().append("{").append("index=").append(index).append(", timestamp=").append(timestamp).append(", transactions:").append(transactionsString).append(", previousHash:'").append(previousHash).append('\'').append('}').toString();
+        return new StringBuilder().append("{").append("index=").append(blockId).append(", timestamp=").append(timestamp).append(", transactions:").append(transactionsString).append(", previousHash:'").append(previousHash).append('\'').append('}').toString();
     }
 
     public String getHash() {

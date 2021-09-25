@@ -1,15 +1,17 @@
 package fr.houekpetodji.mahugnon.blockchain.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+@Entity
 public class SmartBlockchain implements Serializable {
-    private List<SmartBlock> chaine;
+    @Id
+    @GeneratedValue(generator = "UUID")
+    private UUID smartBlockchainId;
+    @OneToMany
+    @JoinColumn(name = "blocks")
+    private List<SmartBlock> chaines;
     public SmartBlockchain() {
     }
 
@@ -17,8 +19,8 @@ public class SmartBlockchain implements Serializable {
      * Create the root block of the blockchain. This root block has no previous hash
      */
     private void createGenesis() {
-        chaine = new ArrayList<>();
-        chaine.add(new SmartBlock( new ArrayList<Transaction>(), ""));
+        chaines = new ArrayList<>();
+        chaines.add(new SmartBlock( new ArrayList<Transaction>(), ""));
     }
 
     /**
@@ -29,21 +31,21 @@ public class SmartBlockchain implements Serializable {
     public SmartBlock newBlock(SmartBlock block) {
 
 
-        this.chaine.add(block);
+        this.chaines.add(block);
 
         return block;
     }
 
 
-    public SmartBlock lastBlock(){
-      return   this.chaine.get(this.chaine.size()-1);
+    public SmartBlock lastBlock() throws Exception{
+      return   this.chaines.get(this.chaines.size()-1);
     }
 
-    public List<SmartBlock> getChaine() {
-        if (chaine==null) {
+    public List<SmartBlock> getChaines() {
+        if (chaines ==null) {
             this.createGenesis();
         }
-        return chaine;
+        return chaines;
     }
 
 
